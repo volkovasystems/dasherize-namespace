@@ -26,7 +26,14 @@ var dasherizeNamespace = function dasherizeNamespace( namespace ){
 	*/
 
 	if( NAMESPACE_PATTERN.test( namespace ) ){
-
+        return namespace.replace( NAMESPACE_TERM_PATTERN,
+            function onReplaced( match, divideCharacter ){
+                if( divideCharacter && divideCharacter != "-" ){
+                    return match.replace( divideCharacter, "-" );
+                }else{
+                    return match;
+                }
+            } );
 	}else{
 		var error = new Error( "invalid namespace format" );
 		console.error( error );
@@ -35,6 +42,6 @@ var dasherizeNamespace = function dasherizeNamespace( namespace ){
 };
 
 const NAMESPACE_PATTERN = /^(?:[a-zA-Z][a-zA-Z0-9]+[-_ ])*[a-zA-Z][a-zA-Z0-9]+$/;
-const NAMESPACE_TERM_PATTERN = /^([a-zA-Z])|[-_ ]([a-zA-Z])/;
+const NAMESPACE_TERM_PATTERN = /^[a-zA-Z]|([-_ ])[a-zA-Z]/g;
 
 ( module || { } ).exports = dasherizeNamespace;
