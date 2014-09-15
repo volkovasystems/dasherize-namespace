@@ -40,26 +40,35 @@
 
 	@end-module-documentation
 */
-var dasherizeNamespace = function dasherizeNamespace( namespace ){
+var dasherizeNamespace = function dasherizeNamespace( namespace, doNotDasherizeFirstLetter ){
 	/*:
 		@meta-configuration:
 			{
-				"namespace:required": "string"
+				"namespace:required": "string",
+				"doNotDasherizeFirstLetter": "boolean"
 			}
 		@end-meta-configuration
 	*/
 
 	if( NAMESPACE_PATTERN.test( namespace ) ){
-        return namespace.replace( NAMESPACE_TERM_PATTERN,
-            function onReplaced( match, divideCharacter ){
+		if( doNotDasherizeFirstLetter ){
+			namespace = namespace[ 0 ].toLowerCase( ) + namespace.substring( 1 );
+		}
 
-                if( divideCharacter && divideCharacter != "-" ){
-                    return match.replace( divideCharacter, "-" );
-                    
-                }else{
-                    return match;
-                }
-            } );
+		return namespace
+			.replace( NAMESPACE_TERM_PATTERN,
+				function onReplaced( match, divideCharacter ){
+					if( UPPERCASE_ALPHABET_PATTERN.test( divideCharacter ) ){
+						return match.replace( divideCharacter, "-" + divideCharacter.toLowerCase( ) );
+
+					}else if( divideCharacter && divideCharacter != "-" ){
+						return match.replace( divideCharacter, "-" );
+						
+					}else{
+						return match;
+					}
+				} )
+			.toLowerCase( );
 
 	}else{
 		var error = new Error( "invalid namespace format" );
@@ -68,7 +77,8 @@ var dasherizeNamespace = function dasherizeNamespace( namespace ){
 	}
 };
 
-const NAMESPACE_PATTERN = /^(?:[a-zA-Z][a-zA-Z0-9]*[-_ ])*[a-zA-Z][a-zA-Z0-9]*$/;
-const NAMESPACE_TERM_PATTERN = /^[a-zA-Z]|([-_ ])[a-zA-Z]/g;
+const UPPERCASE_ALPHABET_PATTERN = /[A-Z]/;
+const NAMESPACE_PATTERN = /^(?:[a-zA-Z][a-zA-Z0-9]*[-_ ]?)*[a-zA-Z][a-zA-Z0-9]*$/;
+const NAMESPACE_TERM_PATTERN = /^[a-z]|([-A-Z_ ])[a-zA-Z]/g;
 
 module.exports = dasherizeNamespace;
