@@ -50,7 +50,6 @@ var dasherizeNamespace = function dasherizeNamespace( namespace ){
 	*/
 
 	if( NAMESPACE_PATTERN.test( namespace ) ){
-
         return namespace.replace( NAMESPACE_TERM_PATTERN,
             function onReplaced( match, divideCharacter ){
 
