@@ -45,7 +45,7 @@ var dasherizeNamespace = function dasherizeNamespace( namespace, doNotDasherizeF
 		@meta-configuration:
 			{
 				"namespace:required": "string",
-				"doNotDasherizeFirstLetter": "boolean"
+				"doNotDasherizeFirstLetter:optional": "boolean"
 			}
 		@end-meta-configuration
 	*/
@@ -53,6 +53,10 @@ var dasherizeNamespace = function dasherizeNamespace( namespace, doNotDasherizeF
 	if( NAMESPACE_PATTERN.test( namespace ) ){
 		if( doNotDasherizeFirstLetter ){
 			namespace = namespace[ 0 ].toLowerCase( ) + namespace.substring( 1 );
+		}
+
+		if( ALL_UPPERCASE_ALPHABET_PATTERN.test( namespace ) ){
+			namespace = namespace.toLowerCase( );
 		}
 
 		return namespace
@@ -77,6 +81,7 @@ var dasherizeNamespace = function dasherizeNamespace( namespace, doNotDasherizeF
 	}
 };
 
+const ALL_UPPERCASE_ALPHABET_PATTERN = /^(?:[A-Z][A-Z0-9]*[-_ ]?)*[A-Z][A-Z0-9]*$/
 const UPPERCASE_ALPHABET_PATTERN = /[A-Z]/;
 const NAMESPACE_PATTERN = /^(?:[a-zA-Z][a-zA-Z0-9]*[-_ ]?)*[a-zA-Z][a-zA-Z0-9]*$/;
 const NAMESPACE_TERM_PATTERN = /^[a-z]|([-A-Z_ ])[a-zA-Z]/g;
