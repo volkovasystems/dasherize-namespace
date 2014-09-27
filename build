@@ -1,0 +1,16 @@
+/*:
+	@build-configuration:
+		{
+			"packageName": "dasherize-namespace",
+			"authorName": "Richeve S. Bebedor",
+			"authorEMail": "richeve.bebedor@gmail.com",
+			"repository": "git@github.com:volkovasystems/dasherize-namespace.git"
+		}
+	@end-build-configuration
+
+	@build-procedure:
+		[
+			
+		]
+	@end-build-procedure
+*/
